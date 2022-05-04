@@ -8,15 +8,15 @@
  * @argv: Pointer of array of pointers containing strings entering main
  * Return: Always 0 (Success)
  */
-int main(int agrc, char **agrv)
+int main(int argc, char **argv)
 {
 	int i;
 
-	if (agrc > 0)
+	if (argc > 0)
 	{
-		for (i = 0; i < agrc; i++)
+		for (i = 0; i < argc; i++)
 		{
-			printf("%s\n", agrv[i]);
+			printf("%s\n", argv[i]);
 		}
 	}
 	return (0);
