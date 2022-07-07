@@ -1,63 +1,37 @@
 #include "lists.h"
 
 /**
- *  delete_dnodeint_at_index - delete node at give index
- *	@head:list
- * @index:given index
- * Return: -1 or 0
+ * delete_dnodeint_at_index - delete node at index
+ * @head: type dpointer of next and prev node
+ * @index: type unisgned int index of node
+ * Return: 1 if success or -1 if node NULL
  */
+
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-	dlistint_t *start;
-	unsigned int i;
-	unsigned int len = len_node(head);
+	dlistint_t *temp_node = *head;
 
-	start = *head;
 	if (*head == NULL)
 		return (-1);
 
-	if (index == 0)
+	for (; index != 0; index--)
 	{
-		start = start->next;
-		free(*head);
-		*head = start;
-		if (start != NULL)
-			start->prev = NULL;
-		return (1);
-	}
-	for (i = 0; i <= index - 1; i++)
-	{
-		start = start->next;
-		if (!start)
+		if (temp_node == NULL)
 			return (-1);
+		temp_node = temp_node->next;
 	}
-	if (len - 1 == index)
+	if (temp_node == *head)
 	{
-		start->prev->next = NULL;
-		free(start);
-		return (1);
+		*head = temp_node->next;
+		if (*head != NULL)
+			(*head)->prev = NULL;
 	}
-	start->prev->next = start->next;
-	start->next->prev = start->prev;
-	free(start);
+	else
+	{
+		temp_node->prev->next = temp_node->next;
+		if (temp_node->next != NULL)
+			temp_node->next->prev = temp_node->prev;
+	}
+	free(temp_node);
 	return (1);
-}
-/**
- * len_node - list len
- *
- * @node:list
- * Return:unsigned int
- */
-unsigned int len_node(dlistint_t **node)
-{
-	unsigned int len = 0;
-	dlistint_t *start;
-
-	start = *node;
-	while (start != NULL)
-	{
-		len += 1;
-		start = start->next;
-	}
-	return (len);
 }

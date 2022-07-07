@@ -1,62 +1,39 @@
 #include "lists.h"
 
 /**
- * insert_dnodeint_at_index - insert node at index
- *
- * @h: head node
- * @idx: index to insert
- * @n: data to insert
- * Return: dlistint_t* addres of node
+ * insert_dnodeint_at_index - return the nth node of a dlistint list
+ * @h: type pointer dlistint nodes
+ * @idx: type unsigned int index of node
+ * @n: type int value of node
+ * Return: return the new node or NULL if failed
  */
 dlistint_t *insert_dnodeint_at_index(dlistint_t **h, unsigned int idx, int n)
 {
-	unsigned int c = 0;
-	dlistint_t *start, *new;
-	unsigned int len = len_node(h);
+	dlistint_t *temp_node = *h;
+	dlistint_t *new_node;
 
 	if (idx == 0)
 		return (add_dnodeint(h, n));
-	start = *h;
-	while (start)
-	{
-		if (c == idx - 1)
-			break;
-		else if (c < idx - 1 && start == NULL)
-		return (NULL);
-		start = start->next;
-		c++;
-	}
-	new = malloc(sizeof(dlistint_t));
-	if (new == NULL)
-		return (NULL);
-	if (len == idx)
-		return (add_dnodeint_end(h, n));
-	else if (len < idx)
-		return (NULL);
-	start->next->prev = new;
-	new->next = start->next;
-	start->next = new;
-	new->prev = start;
-	new->n = n;
-	return (new);
-}
-/**
- * len_node - list len
- *
- * @node:list
- * Return: unsigned int
- *
- */
-unsigned int len_node(dlistint_t **node)
-{
-	unsigned int len = 0;
-	dlistint_t *start;
 
-	start = *node;
-	while (start != NULL)
+	for (; idx != 1; idx--)
 	{
-		len += 1;
-		start = start->next;
+		temp_node = temp_node->next;
+		if (temp_node == NULL)
+			return (NULL);
+
 	}
-	return (len);
+	if (temp_node->next == NULL)
+		return (add_dnodeint_end(h, n));
+
+	new_node = malloc(sizeof(dlistint_t));
+	if (new_node == NULL)
+		return (NULL);
+
+	new_node->n = n;
+	new_node->prev = temp_node;
+	new_node->next = temp_node->next;
+	temp_node->next->prev = new_node;
+	temp_node->next = new_node;
+
+	return (new_node);
 }
